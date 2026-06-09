@@ -1,0 +1,23 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Proxy: /api/* → https://otruyenapi.com/v1/*  (mirrors Vite dev proxy)
+[[redirects]]
+  from = "/api/*"
+  to = "https://otruyenapi.com/v1/:splat"
+  status = 200
+  force = true
+
+# Proxy: /cdn-api/* → https://sv1.otruyencdn.com/v1/api/*  (chapter images API)
+[[redirects]]
+  from = "/cdn-api/*"
+  to = "https://sv1.otruyencdn.com/v1/api/:splat"
+  status = 200
+  force = true
+
+# SPA fallback — all unmatched routes serve index.html (React Router handles them)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
