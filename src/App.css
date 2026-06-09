@@ -1,0 +1,42 @@
+/* Swiper navigation custom styles */
+.hero-swiper .swiper-button-next,
+.hero-swiper .swiper-button-prev {
+  background: rgba(0, 0, 0, 0.5);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.swiper-button-prev:after, .swiper-button-next:after {
+  font-size: 16px !important;
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #7f7f7f7a !important;
+    border-radius: 30px;
+    height: 10px;
+    margin: 0;
+    padding: 0;
+    width: 10px;
+}
+
+::-webkit-scrollbar-corner {
+    background: #0000;
+}
+
+::-webkit-scrollbar {
+    background-color: #5d5d5d0a !important;
+    border: 1px solid #8583830f;
+    height: 13px;
+    width: 9px;
+    border-radius: 30px;
+}
