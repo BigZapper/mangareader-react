@@ -12,7 +12,7 @@ export default function GenreWidget() {
         {genres.map(genre => (
           <Link
             key={genre}
-            to={`/manga?genre=${encodeURIComponent(genre)}`}
+            to={`/the-loai/${encodeURIComponent(genre.toLocaleLowerCase())}`}
             className="text-xs text-[#888] bg-[#222] hover:bg-[#366ad3] hover:text-white px-2.5 py-1 rounded border border-[#333] hover:border-[#366ad3] transition-colors"
           >
             {genre}

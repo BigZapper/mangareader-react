@@ -66,8 +66,15 @@ export default function SearchPage() {
   const filtered = applyFilters(allMangas, status, type, genres, order);
 
   const sentinelRef = useRef(null);
+  const isFetchingRef = useRef(false);
 
-  // IntersectionObserver — recreated when hasNextPage/isFetchingNextPage changes
+  // Keep ref in sync so the observer callback always reads the latest value
+  // without isFetchingNextPage being an observer dep (which would cause a loop)
+  useEffect(() => {
+    isFetchingRef.current = isFetchingNextPage;
+  }, [isFetchingNextPage]);
+
+  // Observer only recreates when hasNextPage changes, not on every fetch cycle
   useEffect(() => {
     if (!hasNextPage) return;
     const sentinel = sentinelRef.current;
@@ -75,24 +82,14 @@ export default function SearchPage() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isFetchingNextPage) fetchNextPage();
+        if (entries[0].isIntersecting && !isFetchingRef.current) fetchNextPage();
       },
       { rootMargin: '400px' }
     );
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  // After a page loads: if sentinel is already in view (sparse filtered results),
-  // trigger the next page immediately without waiting for a scroll event.
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage) return;
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    const rect = sentinel.getBoundingClientRect();
-    if (rect.top <= window.innerHeight + 400) fetchNextPage();
-  }, [data?.pages.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [hasNextPage, fetchNextPage]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
