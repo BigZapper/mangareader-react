@@ -10,10 +10,9 @@ export default function PopularSlider({ mangas }) {
       modules={[Navigation, FreeMode]}
       navigation
       freeMode
-      slidesPerView={2}
+      slidesPerView={4}
       spaceBetween={12}
       breakpoints={{
-        480: { slidesPerView: 3 },
         640: { slidesPerView: 4 },
         768: { slidesPerView: 5 },
         1024: { slidesPerView: 6 },

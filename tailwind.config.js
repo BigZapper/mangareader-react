@@ -15,11 +15,22 @@ export default {
         'text-primary': '#b8b8b8',
         'text-muted': '#888',
         'border-dark': '#333',
+        'th-bg':       'var(--th-bg)',
+        'th-surface':  'var(--th-surface)',
+        'th-card':     'var(--th-card)',
+        'th-input':    'var(--th-input)',
+        'th-border':   'var(--th-border)',
+        'th-border-s': 'var(--th-border-s)',
+        'th-text':     'var(--th-text)',
+        'th-muted':    'var(--th-muted)',
+        'th-dim':      'var(--th-dim)',
       },
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
       },
     },
   },
-  plugins: [],
+  plugins: [
+    ({ addVariant }) => addVariant('light', 'body.lightmode &'),
+  ],
 }

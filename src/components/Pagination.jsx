@@ -12,15 +12,15 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-1.5 text-sm rounded bg-[#222] text-[#888] hover:bg-[#366ad3] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-1.5 text-sm rounded bg-th-card text-th-muted hover:bg-[#366ad3] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         Prev
       </button>
 
       {start > 1 && (
         <>
-          <button onClick={() => onPageChange(1)} className="px-3 py-1.5 text-sm rounded bg-[#222] text-[#888] hover:bg-[#366ad3] hover:text-white transition-colors">1</button>
-          {start > 2 && <span className="text-[#555] px-1">...</span>}
+          <button onClick={() => onPageChange(1)} className="px-3 py-1.5 text-sm rounded bg-th-card text-th-muted hover:bg-[#366ad3] hover:text-white transition-colors">1</button>
+          {start > 2 && <span className="text-th-dim px-1">...</span>}
         </>
       )}
 
@@ -31,7 +31,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           className={`px-3 py-1.5 text-sm rounded transition-colors ${
             p === currentPage
               ? 'bg-[#366ad3] text-white'
-              : 'bg-[#222] text-[#888] hover:bg-[#366ad3] hover:text-white'
+              : 'bg-th-card text-th-muted hover:bg-[#366ad3] hover:text-white'
           }`}
         >
           {p}
@@ -40,15 +40,15 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
 
       {end < totalPages && (
         <>
-          {end < totalPages - 1 && <span className="text-[#555] px-1">...</span>}
-          <button onClick={() => onPageChange(totalPages)} className="px-3 py-1.5 text-sm rounded bg-[#222] text-[#888] hover:bg-[#366ad3] hover:text-white transition-colors">{totalPages}</button>
+          {end < totalPages - 1 && <span className="text-th-dim px-1">...</span>}
+          <button onClick={() => onPageChange(totalPages)} className="px-3 py-1.5 text-sm rounded bg-th-card text-th-muted hover:bg-[#366ad3] hover:text-white transition-colors">{totalPages}</button>
         </>
       )}
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-1.5 text-sm rounded bg-[#222] text-[#888] hover:bg-[#366ad3] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-1.5 text-sm rounded bg-th-card text-th-muted hover:bg-[#366ad3] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         Next
       </button>

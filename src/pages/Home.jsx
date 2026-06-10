@@ -42,7 +42,7 @@ export default function Home() {
             {/* Tabbed list — dùng data từ /danh-sach */}
             <div>
               <div className="flex items-center justify-between mb-0">
-                <div className="flex gap-1 border-b border-[#333] overflow-x-auto overflow-y-hidden">
+                <div className="flex gap-1 border-b border-th-border overflow-x-auto overflow-y-hidden">
                   {TYPES.map((t) => (
                     <button
                       key={t.slug}
@@ -50,7 +50,7 @@ export default function Home() {
                       className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors -mb-px ${
                         activeType === t.slug
                           ? 'border-[#366ad3] text-[#366ad3]'
-                          : 'border-transparent text-[#888] hover:text-[#ddd]'
+                          : 'border-transparent text-th-muted hover:text-th-text'
                       }`}
                     >
                       {t.label}
@@ -67,7 +67,7 @@ export default function Home() {
 
               <div className="mt-4">
                 {listLoading && (
-                  <div className="text-center text-[#888] py-12">Đang tải...</div>
+                  <div className="text-center text-th-muted py-12">Đang tải...</div>
                 )}
 
                 {listError && (
@@ -77,7 +77,7 @@ export default function Home() {
                 {listData && (
                   <>
                     {/* List view — 8 items đầu */}
-                    <div className="bg-[#1d1b26] rounded-lg px-4 divide-y divide-[#222] mb-6">
+                    <div className="bg-th-surface rounded-lg px-4 divide-y divide-th-border-s mb-6">
                       {listData.mangas.slice(0, 8).map((manga) => (
                         <MangaListItem key={manga.id} manga={manga} />
                       ))}

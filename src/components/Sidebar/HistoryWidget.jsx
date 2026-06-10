@@ -5,16 +5,16 @@ export default function HistoryWidget() {
   const { history, clearHistory } = useHistory();
 
   return (
-    <div className="bg-[#1d1b26] rounded-lg p-4">
+    <div className="bg-th-surface rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-[#ddd] font-semibold text-sm flex items-center gap-2">
+        <h3 className="text-th-text font-semibold text-sm flex items-center gap-2">
           <span className="w-1 h-4 bg-[#366ad3] rounded-full block" />
           Reading History
         </h3>
         {history.length > 0 && (
           <button
             onClick={clearHistory}
-            className="text-[10px] text-[#555] hover:text-red-400 transition-colors"
+            className="text-[10px] text-th-dim hover:text-red-400 transition-colors"
           >
             Clear
           </button>
@@ -22,7 +22,7 @@ export default function HistoryWidget() {
       </div>
 
       {history.length === 0 ? (
-        <p className="text-[#555] text-xs text-center py-4">No history yet</p>
+        <p className="text-th-dim text-xs text-center py-4">No history yet</p>
       ) : (
         <div className="space-y-2">
           {history.slice(0, 5).map(item => (
@@ -33,10 +33,10 @@ export default function HistoryWidget() {
             >
               <img src={item.cover} alt={item.title} className="w-8 h-10 object-cover rounded shrink-0" loading="lazy" />
               <div className="flex-1 min-w-0">
-                <p className="text-xs text-[#ddd] group-hover:text-[#366ad3] transition-colors line-clamp-1">
+                <p className="text-xs text-th-text group-hover:text-[#366ad3] transition-colors line-clamp-1">
                   {item.title}
                 </p>
-                <p className="text-[10px] text-[#555]">{item.latestChapter}</p>
+                <p className="text-[10px] text-th-dim">{item.latestChapter}</p>
               </div>
             </Link>
           ))}

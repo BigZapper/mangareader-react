@@ -15,7 +15,7 @@ export default function MangaListItem({ manga }) {
   };
 
   return (
-    <div className="flex gap-3 py-3 border-b border-[#222] last:border-0">
+    <div className="flex gap-3 py-3 border-b border-th-border-s last:border-0">
       {/* Cover */}
       <div className="relative shrink-0">
         <Link to={`/manga/${manga.slug}`}>
@@ -40,7 +40,7 @@ export default function MangaListItem({ manga }) {
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <Link to={`/manga/${manga.slug}`} className="font-medium text-[#ddd] hover:text-[#366ad3] text-sm leading-tight block mb-1.5 line-clamp-2">
+        <Link to={`/manga/${manga.slug}`} className="font-medium text-th-text hover:text-[#366ad3] text-sm leading-tight block mb-1.5 line-clamp-2">
           {manga.title}
         </Link>
 
@@ -49,16 +49,16 @@ export default function MangaListItem({ manga }) {
             <li key={i} className="flex items-center justify-between gap-2">
               <Link
                 to={`/manga/${manga.slug}/${ch.slug}`}
-                className="text-xs text-[#888] hover:text-[#366ad3] transition-colors truncate"
+                className="text-xs text-th-muted hover:text-[#366ad3] transition-colors truncate"
               >
                 {ch.title}
               </Link>
-              <span className="text-xs text-[#555] shrink-0">{ch.timeAgo}</span>
+              <span className="text-xs text-th-dim shrink-0">{ch.timeAgo}</span>
             </li>
           ))}
         </ul>
 
-        <div className={`flex items-center gap-1 mt-1.5 text-xs ${statusColor[manga.status] || 'text-[#888]'}`}>
+        <div className={`flex items-center gap-1 mt-1.5 text-xs ${statusColor[manga.status] || 'text-th-muted'}`}>
           <FaCircle size={6} />
           {manga.status}
         </div>

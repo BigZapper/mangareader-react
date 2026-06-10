@@ -28,12 +28,12 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#1d1b26] border-b border-[#333] shadow-lg">
+    <header className="sticky top-0 z-50 bg-th-surface border-b border-th-border shadow-lg">
       <div className="max-w-[1200px] mx-auto px-4 flex items-center gap-4 h-14">
         {/* Hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="text-[#b8b8b8] hover:text-[#366ad3] md:hidden transition-colors"
+          className="text-th-muted hover:text-[#366ad3] md:hidden transition-colors"
           aria-label="Menu"
         >
           <FaBars size={20} />
@@ -42,7 +42,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <div className="w-8 h-8 bg-[#366ad3] rounded flex items-center justify-center font-bold text-white text-sm">MR</div>
-          <span className="font-semibold text-[#ddd] hidden sm:block text-base">MangaReader</span>
+          <span className="font-semibold text-th-text hidden sm:block text-base">MangaReader</span>
         </Link>
 
         {/* Desktop nav */}
@@ -51,7 +51,7 @@ export default function Navbar() {
             <Link
               key={link.to}
               to={link.to}
-              className="px-3 py-2 text-[#b8b8b8] hover:text-[#366ad3] text-sm font-medium transition-colors rounded"
+              className="px-3 py-2 text-th-muted hover:text-[#366ad3] text-sm font-medium transition-colors rounded"
             >
               {link.label}
             </Link>
@@ -59,14 +59,14 @@ export default function Navbar() {
         </nav>
 
         {/* Search bar desktop */}
-        <form onSubmit={handleSearch} className="hidden md:flex items-center bg-[#111] border border-[#333] rounded overflow-hidden">
+        <form onSubmit={handleSearch} className="hidden md:flex items-center bg-th-input border border-th-border rounded overflow-hidden">
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Search manga..."
-            className="bg-transparent text-[#ddd] placeholder-[#555] px-3 py-1.5 text-sm outline-none w-48 focus:w-64 transition-all"
+            className="bg-transparent text-th-text placeholder-th-dim px-3 py-1.5 text-sm outline-none w-48 focus:w-64 transition-all"
           />
-          <button type="submit" className="px-3 py-2 text-[#888] hover:text-[#366ad3] transition-colors">
+          <button type="submit" className="px-3 py-2 text-th-muted hover:text-[#366ad3] transition-colors">
             <FaSearch size={14} />
           </button>
         </form>
@@ -74,7 +74,7 @@ export default function Navbar() {
         {/* Mobile search icon */}
         <button
           onClick={() => setSearchOpen(!searchOpen)}
-          className="md:hidden text-[#b8b8b8] hover:text-[#366ad3] transition-colors"
+          className="md:hidden text-th-muted hover:text-[#366ad3] transition-colors"
           aria-label="Search"
         >
           <FaSearch size={16} />
@@ -83,7 +83,7 @@ export default function Navbar() {
         {/* Theme toggle */}
         <button
           onClick={toggle}
-          className="text-[#b8b8b8] hover:text-[#366ad3] transition-colors shrink-0 ml-auto md:ml-0"
+          className="text-th-muted hover:text-[#366ad3] transition-colors shrink-0 ml-auto md:ml-0"
           aria-label="Toggle theme"
         >
           {isDark ? <FaSun size={16} /> : <FaMoon size={16} />}
@@ -92,16 +92,16 @@ export default function Navbar() {
 
       {/* Mobile search bar */}
       {searchOpen && (
-        <div className="md:hidden border-t border-[#333] px-4 py-2">
-          <form onSubmit={handleSearch} className="flex items-center bg-[#111] border border-[#333] rounded overflow-hidden">
+        <div className="md:hidden border-t border-th-border px-4 py-2">
+          <form onSubmit={handleSearch} className="flex items-center bg-th-input border border-th-border rounded overflow-hidden">
             <input
               autoFocus
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder="Search manga..."
-              className="bg-transparent text-[#ddd] placeholder-[#555] px-3 py-2 text-sm outline-none flex-1"
+              className="bg-transparent text-th-text placeholder-th-dim px-3 py-2 text-sm outline-none flex-1"
             />
-            <button type="submit" className="px-3 py-2 text-[#888] hover:text-[#366ad3]">
+            <button type="submit" className="px-3 py-2 text-th-muted hover:text-[#366ad3]">
               <FaSearch size={14} />
             </button>
           </form>
@@ -110,14 +110,14 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden border-t border-[#333] bg-[#1d1b26]">
+        <div className="md:hidden border-t border-th-border bg-th-surface">
           <nav className="flex flex-col py-2">
             {navLinks.map(link => (
               <Link
                 key={link.to}
                 to={link.to}
                 onClick={() => setMenuOpen(false)}
-                className="px-4 py-2.5 text-[#b8b8b8] hover:text-[#366ad3] hover:bg-[#222] text-sm transition-colors"
+                className="px-4 py-2.5 text-th-muted hover:text-[#366ad3] hover:bg-th-card text-sm transition-colors"
               >
                 {link.label}
               </Link>

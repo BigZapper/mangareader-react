@@ -18,7 +18,7 @@ export default function HeroSlider() {
   const mangas = data?.mangas?.slice(0, 8) ?? [];
 
   if (mangas.length === 0) {
-    return <div className="h-[420px] md:h-[520px] bg-[#16151d]" />;
+    return <div className="h-[420px] md:h-[520px] bg-th-bg" />;
   }
 
   return (
@@ -50,37 +50,37 @@ export default function HeroSlider() {
               {/* Content */}
               <div className="relative h-full max-w-[1200px] mx-auto px-5 flex items-center gap-6">
                 {/* Cover */}
-                <div className="hidden sm:block shrink-0">
+                <div className="shrink-0">
                   <img
                     src={manga.cover}
                     alt={manga.title}
-                    className="w-[120px] md:w-[160px] aspect-[2/3] rounded-lg shadow-2xl object-cover border border-[#ffffff15]"
+                    className="w-[80px] sm:w-[120px] md:w-[160px] aspect-[2/3] rounded-lg shadow-2xl object-cover border border-[#ffffff15]"
                     loading="lazy"
                   />
                 </div>
 
                 {/* Info */}
-                <div className="flex-1 max-w-lg">
-                  <div className="flex items-center gap-2 mb-3">
+                <div className="flex-1 max-w-lg min-w-0">
+                  <div className="flex items-center gap-2 mb-1.5 sm:mb-3">
                     {manga.type && (
                       <span className="bg-[#366ad3] text-white text-xs px-2 py-0.5 rounded font-medium">
                         {manga.type}
                       </span>
                     )}
                     {manga.status && (
-                      <span className={`flex items-center gap-1 text-xs font-medium ${STATUS_COLOR[manga.status] ?? 'text-[#888]'}`}>
+                      <span className={`flex items-center gap-1 text-xs font-medium ${STATUS_COLOR[manga.status] ?? 'text-th-muted'}`}>
                         <FaCircle size={6} />
                         {manga.status}
                       </span>
                     )}
                   </div>
 
-                  <h2 className="text-2xl md:text-4xl font-bold text-white mb-3 leading-tight line-clamp-2">
+                  <h2 className="text-base sm:text-2xl md:text-4xl font-bold text-white mb-1.5 sm:mb-3 leading-tight line-clamp-2">
                     {manga.title}
                   </h2>
 
                   {manga.genreCategories?.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="hidden sm:flex flex-wrap gap-2 mb-4">
                       {manga.genreCategories.slice(0, 4).map((g) => (
                         <Link
                           key={g.slug}
@@ -94,22 +94,22 @@ export default function HeroSlider() {
                   )}
 
                   {manga.latestChapter && (
-                    <p className="text-[#888] text-sm mb-4">
-                      Mới nhất: <span className="text-[#ddd]">{manga.latestChapter}</span>
+                    <p className="hidden sm:block text-th-muted text-sm mb-4">
+                      Mới nhất: {manga.latestChapter}
                     </p>
                   )}
 
-                  <div className="flex gap-3">
+                  <div className="flex gap-2 sm:gap-3">
                     <Link
                       to={`/manga/${manga.slug}`}
-                      className="flex items-center gap-2 bg-[#366ad3] hover:bg-[#2856b8] text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+                      className="flex items-center gap-1.5 sm:gap-2 bg-[#366ad3] hover:bg-[#2856b8] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium transition-colors"
                     >
-                      <FaBookOpen size={14} />
+                      <FaBookOpen size={12} />
                       Đọc ngay
                     </Link>
                     <Link
                       to={`/manga/${manga.slug}`}
-                      className="flex items-center gap-2 bg-[#ffffff15] hover:bg-[#ffffff25] text-[#ddd] px-4 py-2 rounded text-sm font-medium transition-colors border border-[#ffffff20]"
+                      className="flex items-center gap-1.5 sm:gap-2 bg-[#ffffff15] hover:bg-[#ffffff25] text-[#ddd] px-3 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium transition-colors border border-[#ffffff20]"
                     >
                       Chi tiết
                     </Link>

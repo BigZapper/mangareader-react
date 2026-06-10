@@ -18,7 +18,7 @@ export default function MangaDetail() {
 
   if (isLoading) {
     return (
-      <div className="max-w-[1200px] mx-auto px-4 py-16 text-center text-[#888]">
+      <div className="max-w-[1200px] mx-auto px-4 py-16 text-center text-th-muted">
         Đang tải...
       </div>
     );
@@ -26,7 +26,7 @@ export default function MangaDetail() {
 
   if (isError || !manga) {
     return (
-      <div className="max-w-[1200px] mx-auto px-4 py-16 text-center text-[#555]">
+      <div className="max-w-[1200px] mx-auto px-4 py-16 text-center text-th-dim">
         <p className="text-xl mb-4">Không tìm thấy truyện</p>
         <Link to="/manga" className="text-[#366ad3] hover:underline">Quay lại danh sách</Link>
       </div>
@@ -46,16 +46,16 @@ export default function MangaDetail() {
   return (
     <div className="max-w-[1200px] mx-auto px-4 py-6">
       {/* Hero */}
-      <div className="bg-[#1d1b26] rounded-lg overflow-hidden mb-6">
+      <div className="bg-th-surface rounded-lg overflow-hidden mb-6">
         {/* Banner placeholder */}
-        <div className="relative h-40 sm:h-56 bg-[#111]">
+        <div className="relative h-40 sm:h-56 bg-th-card">
           <img
             src={manga.cover}
             alt=""
             className="w-full h-full object-cover opacity-20 blur-sm scale-110"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1d1b26] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-th-surface to-transparent" />
         </div>
 
         {/* Info */}
@@ -63,15 +63,15 @@ export default function MangaDetail() {
           <img
             src={manga.cover}
             alt={manga.title}
-            className="w-44 sm:w-52 aspect-[2/3] object-cover rounded-lg shadow-2xl shrink-0 border-2 border-[#333] mx-auto sm:mx-0"
+            className="w-44 sm:w-52 aspect-[2/3] object-cover rounded-lg shadow-2xl shrink-0 border-2 border-th-border mx-auto sm:mx-0"
             loading="lazy"
           />
 
           <div className="flex-1 pt-2 sm:pt-16">
-            <h1 className="text-[#ddd] font-bold text-xl sm:text-2xl mb-0.5">{manga.title}</h1>
+            <h1 className="text-th-text font-bold text-xl sm:text-2xl mb-0.5">{manga.title}</h1>
 
             {manga.originName.length > 0 && (
-              <p className="text-[#666] text-sm mb-2 italic">{manga.originName.join(' / ')}</p>
+              <p className="text-th-muted text-sm mb-2 italic">{manga.originName.join(' / ')}</p>
             )}
 
             <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -79,14 +79,14 @@ export default function MangaDetail() {
                 <span className="bg-[#366ad3] text-white text-xs px-2 py-0.5 rounded">{manga.type}</span>
               )}
               {manga.status && (
-                <span className={`text-xs px-2 py-0.5 rounded border ${statusStyle[manga.status] ?? 'border-[#555] text-[#888]'}`}>
+                <span className={`text-xs px-2 py-0.5 rounded border ${statusStyle[manga.status] ?? 'border-th-dim text-th-muted'}`}>
                   {manga.status}
                 </span>
               )}
             </div>
 
             {manga.author?.length > 0 && (
-              <div className="flex items-center gap-1.5 text-[#888] text-sm mb-2">
+              <div className="flex items-center gap-1.5 text-th-muted text-sm mb-2">
                 <FaUser size={11} />
                 <span>{manga.author.join(', ')}</span>
               </div>
@@ -94,12 +94,12 @@ export default function MangaDetail() {
 
             {manga.genreCategories?.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mb-3">
-                <FaTag size={11} className="text-[#555] mt-1 shrink-0" />
+                <FaTag size={11} className="text-th-dim mt-1 shrink-0" />
                 {manga.genreCategories.map((g) => (
                   <Link
                     key={g.slug}
                     to={`/the-loai/${g.slug}`}
-                    className="text-xs text-[#888] bg-[#222] hover:bg-[#366ad3] hover:text-white px-2 py-0.5 rounded border border-[#333] hover:border-[#366ad3] transition-colors"
+                    className="text-xs text-th-muted bg-th-card hover:bg-[#366ad3] hover:text-white px-2 py-0.5 rounded border border-th-border hover:border-[#366ad3] transition-colors"
                   >
                     {g.name}
                   </Link>
@@ -109,7 +109,7 @@ export default function MangaDetail() {
 
             {manga.description && (
               <div
-                className="text-[#888] text-sm leading-relaxed mb-4 line-clamp-4 sm:line-clamp-none prose prose-invert prose-sm max-w-none"
+                className="text-th-muted text-sm leading-relaxed mb-4 line-clamp-4 sm:line-clamp-none prose prose-invert prose-sm max-w-none"
                 dangerouslySetInnerHTML={{ __html: manga.description }}
               />
             )}
@@ -126,7 +126,7 @@ export default function MangaDetail() {
               {latestChapter && latestChapter.chapterId !== firstChapter?.chapterId && (
                 <Link
                   to={`/manga/${slug}/chapter/${latestChapter.chapterId}`}
-                  className="flex items-center gap-2 bg-[#222] hover:bg-[#333] text-[#ddd] px-4 py-2 rounded text-sm font-medium border border-[#333] transition-colors"
+                  className="flex items-center gap-2 bg-th-card hover:bg-th-input text-th-text px-4 py-2 rounded text-sm font-medium border border-th-border transition-colors"
                 >
                   <FaBook size={12} /> Đọc mới nhất
                 </Link>
@@ -136,7 +136,7 @@ export default function MangaDetail() {
                 className={`flex items-center gap-2 px-4 py-2 rounded text-sm font-medium border transition-colors ${
                   bookmarked
                     ? 'bg-[#366ad3] border-[#366ad3] text-white'
-                    : 'bg-transparent border-[#333] text-[#888] hover:border-[#366ad3] hover:text-[#366ad3]'
+                    : 'bg-transparent border-th-border text-th-muted hover:border-[#366ad3] hover:text-[#366ad3]'
                 }`}
               >
                 {bookmarked ? <FaBookmark size={12} /> : <FaRegBookmark size={12} />}
@@ -148,18 +148,18 @@ export default function MangaDetail() {
       </div>
 
       {/* Chapter list */}
-      <div className="bg-[#1d1b26] rounded-lg p-4 sm:p-6">
-        <h2 className="text-[#ddd] font-semibold text-base mb-4 flex items-center gap-2">
+      <div className="bg-th-surface rounded-lg p-4 sm:p-6">
+        <h2 className="text-th-text font-semibold text-base mb-4 flex items-center gap-2">
           <span className="w-1 h-5 bg-[#366ad3] rounded-full block" />
           Danh sách chapter ({manga.chapters.length})
         </h2>
 
-        <div className="divide-y divide-[#222] max-h-[500px] overflow-y-auto">
+        <div className="divide-y divide-th-border-s max-h-[500px] overflow-y-auto">
           {manga.chapters.map((ch, i) => (
             <Link
               key={i}
               to={`/manga/${slug}/chapter/${ch.chapterId}`}
-              className="flex items-center justify-between py-2.5 text-sm text-[#888] hover:text-[#366ad3] transition-colors group"
+              className="flex items-center justify-between py-2.5 text-sm text-th-muted hover:text-[#366ad3] transition-colors group"
             >
               <span className="group-hover:text-[#366ad3] transition-colors">{ch.title}</span>
             </Link>

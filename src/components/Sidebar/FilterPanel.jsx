@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGenres } from '../../hooks/useGenres';
-import { FaSearch, FaAngleDown } from 'react-icons/fa';
+import { EMPTY_FILTERS } from '../../utils/filterMangas';
+import { FaAngleDown, FaTimes } from 'react-icons/fa';
 
 const STATUS_OPTIONS = [
   { value: '', label: 'All' },
@@ -15,7 +15,7 @@ const TYPE_OPTIONS = [
   { value: '', label: 'All' },
   { value: 'manga', label: 'Manga' },
   { value: 'manhwa', label: 'Manhwa' },
-  { value: 'manhua', label: 'Manhua' }
+  { value: 'manhua', label: 'Manhua' },
 ];
 
 const ORDER_OPTIONS = [
@@ -23,7 +23,6 @@ const ORDER_OPTIONS = [
   { value: 'az', label: 'A-Z' },
   { value: 'za', label: 'Z-A' },
   { value: 'update', label: 'Mới cập nhật' },
-  { value: 'popular', label: 'Phổ biến' },
 ];
 
 function DropdownFilter({ label, currentLabel, isOpen, onToggle, children }) {
@@ -32,10 +31,10 @@ function DropdownFilter({ label, currentLabel, isOpen, onToggle, children }) {
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-1 bg-[#333] border border-[#444] text-[#ccc] text-xs py-1 px-2 rounded whitespace-nowrap"
+        className="w-full flex items-center justify-between gap-1 bg-th-input light:bg-gray-100 text-th-text light:text-gray-700 text-xs py-1.5 px-2 rounded whitespace-nowrap"
       >
         <span className="font-medium">{label}</span>
-        <span className="flex items-center gap-1 text-[#aaa] min-w-0">
+        <span className="flex items-center gap-1 text-th-muted light:text-gray-500 min-w-0">
           <span className="truncate max-w-[50px]">{currentLabel}</span>
           <FaAngleDown size={10} className={`shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </span>
@@ -53,23 +52,12 @@ DropdownFilter.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default function FilterPanel() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { data: genres } = useGenres();
-
-  const [keyword, setKeyword] = useState(searchParams.get('s') || '');
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [status, setStatus] = useState('');
-  const [type, setType] = useState('');
-  const [order, setOrder] = useState('');
+export default function FilterPanel({ filters = EMPTY_FILTERS, onFiltersChange }) {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const { data: genres } = useGenres();
   const panelRef = useRef(null);
 
-  // Sync keyword input when URL changes (e.g. user searches from Navbar)
-  useEffect(() => {
-    setKeyword(searchParams.get('s') || '');
-  }, [searchParams]);
+  const { status, type, genres: selectedGenres, order } = filters;
 
   useEffect(() => {
     const handler = (e) => {
@@ -84,188 +72,177 @@ export default function FilterPanel() {
   const toggleDropdown = (name) =>
     setActiveDropdown((prev) => (prev === name ? null : name));
 
-  const toggleGenre = (slug) =>
-    setSelectedGenres((prev) =>
-      prev.includes(slug) ? prev.filter((g) => g !== slug) : [...prev, slug]
-    );
+  const update = (patch) => onFiltersChange({ ...filters, ...patch });
 
-  const handleFilter = (e) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (keyword.trim()) params.set('s', keyword.trim());
-    if (status) params.set('status', status);
-    if (type) params.set('type', type);
-    if (order) params.set('order', order);
-    selectedGenres.forEach((g) => params.append('genre', g));
-    navigate(`/search?${params.toString()}`);
-    setActiveDropdown(null);
+  const toggleGenre = (slug) => {
+    update({
+      genres: selectedGenres.includes(slug)
+        ? selectedGenres.filter((g) => g !== slug)
+        : [...selectedGenres, slug],
+    });
   };
 
-  const genreLabel = selectedGenres.length > 0 ? `${selectedGenres.length} selected` : 'All';
+  const hasActiveFilters = status || type || selectedGenres.length > 0 || order;
+
   const statusLabel = STATUS_OPTIONS.find((o) => o.value === status)?.label ?? 'All';
-  const typeLabel = TYPE_OPTIONS.find((o) => o.value === type)?.label ?? 'All';
-  const orderLabel = ORDER_OPTIONS.find((o) => o.value === order)?.label ?? 'Default';
+  const typeLabel   = TYPE_OPTIONS.find((o) => o.value === type)?.label   ?? 'All';
+  const orderLabel  = ORDER_OPTIONS.find((o) => o.value === order)?.label  ?? 'Default';
+  const genreLabel  = selectedGenres.length > 0 ? `${selectedGenres.length} selected` : 'All';
+
+  const dropdownListCls =
+    'absolute z-30 bg-th-input light:bg-white border border-black/20 light:border-gray-200 rounded shadow-lg';
+
+  const dropdownItemCls = (active) =>
+    `flex items-center gap-2 px-3 py-1.5 text-xs cursor-pointer transition-colors ${
+      active
+        ? 'text-[#366ad3] font-medium'
+        : 'text-th-text light:text-gray-600 hover:text-white light:hover:text-gray-900'
+    }`;
 
   return (
-    <div className="bg-[#222] rounded mb-4" ref={panelRef}>
-      {/* Header */}
-      <div className="flex items-baseline justify-between border-b border-[#312f40] px-4 py-2">
-        <h3 className="text-sm font-semibold text-white">Filter Search</h3>
+    <div
+      className="bg-th-surface light:bg-white rounded-lg border border-transparent light:border-gray-200"
+      ref={panelRef}
+    >
+      <div className="flex items-center justify-between border-b border-th-border-s light:border-gray-200 px-4 py-2">
+        <h3 className="text-sm font-semibold text-th-text light:text-gray-800">Bộ lọc</h3>
+        {hasActiveFilters && (
+          <button
+            onClick={() => { onFiltersChange(EMPTY_FILTERS); setActiveDropdown(null); }}
+            className="flex items-center gap-1 text-[10px] text-th-muted light:text-gray-500 hover:text-red-400 transition-colors"
+          >
+            <FaTimes size={9} /> Xóa lọc
+          </button>
+        )}
       </div>
 
-      {/* Body */}
       <div className="p-2.5">
-        <form onSubmit={handleFilter}>
-          <div className="flex flex-wrap">
+        <div className="flex flex-wrap">
 
-            {/* Keyword input */}
-            <div className="w-full px-[5px] py-[6px]">
-              <input
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="Từ khóa tìm kiếm..."
-                className="w-full bg-[#2a2a2a] border border-[#444] text-[#ccc] text-xs py-1.5 px-2 rounded placeholder-[#555] outline-none focus:border-[#366ad3] transition-colors"
-              />
-            </div>
+          {/* Genre */}
+          <DropdownFilter
+            label="Thể loại"
+            currentLabel={genreLabel}
+            isOpen={activeDropdown === 'genre'}
+            onToggle={() => toggleDropdown('genre')}
+          >
+            <ul className={`${dropdownListCls} top-full left-0 w-[280px] p-2 max-h-[240px] overflow-y-auto flex flex-wrap`}>
+              {genres?.map((genre) => (
+                <li key={genre._id} className="w-1/3 p-0">
+                  <label
+                    className={`block px-1.5 py-1 text-xs cursor-pointer truncate rounded transition-colors ${
+                      selectedGenres.includes(genre.slug)
+                        ? 'text-[#366ad3] font-medium'
+                        : 'text-th-text light:text-gray-600 hover:text-white light:hover:text-gray-900'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      className="hidden"
+                      checked={selectedGenres.includes(genre.slug)}
+                      onChange={() => toggleGenre(genre.slug)}
+                    />
+                    {selectedGenres.includes(genre.slug) && '✓ '}
+                    {genre.name}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </DropdownFilter>
 
-            {/* Genre */}
-            <DropdownFilter
-              label="Genre"
-              currentLabel={genreLabel}
-              isOpen={activeDropdown === 'genre'}
-              onToggle={() => toggleDropdown('genre')}
-            >
-              <ul className="absolute top-full right-0 z-30 w-[280px] bg-[#333] border border-black/20 rounded shadow-lg p-2 max-h-[240px] overflow-y-auto flex flex-wrap">
-                {genres?.map((genre) => (
-                  <li key={genre._id} className="w-1/3 p-0">
-                    <label
-                      className={`block px-1.5 py-1 text-xs cursor-pointer truncate rounded transition-colors ${
-                        selectedGenres.includes(genre.slug)
-                          ? 'text-[#366ad3] font-medium'
-                          : 'text-[#ccc] hover:text-white'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        className="hidden"
-                        checked={selectedGenres.includes(genre.slug)}
-                        onChange={() => toggleGenre(genre.slug)}
-                      />
-                      {selectedGenres.includes(genre.slug) && '✓ '}
-                      {genre.name}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </DropdownFilter>
+          {/* Status */}
+          <DropdownFilter
+            label="Trạng thái"
+            currentLabel={statusLabel}
+            isOpen={activeDropdown === 'status'}
+            onToggle={() => toggleDropdown('status')}
+          >
+            <ul className={`${dropdownListCls} top-full right-0 w-36 py-1`}>
+              {STATUS_OPTIONS.map((o) => (
+                <li key={o.value}>
+                  <label className={dropdownItemCls(status === o.value)}>
+                    <input
+                      type="radio"
+                      className="hidden"
+                      name="status"
+                      value={o.value}
+                      checked={status === o.value}
+                      onChange={() => { update({ status: o.value }); setActiveDropdown(null); }}
+                    />
+                    {status === o.value ? '✓ ' : '  '}
+                    {o.label}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </DropdownFilter>
 
-            {/* Status */}
-            <DropdownFilter
-              label="Status"
-              currentLabel={statusLabel}
-              isOpen={activeDropdown === 'status'}
-              onToggle={() => toggleDropdown('status')}
-            >
-              <ul className="absolute top-full right-0 z-30 w-36 bg-[#333] border border-black/20 rounded shadow-lg py-1">
-                {STATUS_OPTIONS.map((o) => (
-                  <li key={o.value} className="p-0">
-                    <label
-                      className={`flex items-center gap-2 px-3 py-1.5 text-xs cursor-pointer transition-colors ${
-                        status === o.value ? 'text-[#366ad3] font-medium' : 'text-[#ccc] hover:text-white'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        className="hidden"
-                        name="status"
-                        value={o.value}
-                        checked={status === o.value}
-                        onChange={() => { setStatus(o.value); setActiveDropdown(null); }}
-                      />
-                      {status === o.value ? '✓ ' : '  '}
-                      {o.label}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </DropdownFilter>
+          {/* Type */}
+          <DropdownFilter
+            label="Loại"
+            currentLabel={typeLabel}
+            isOpen={activeDropdown === 'type'}
+            onToggle={() => toggleDropdown('type')}
+          >
+            <ul className={`${dropdownListCls} top-full right-0 w-36 py-1`}>
+              {TYPE_OPTIONS.map((o) => (
+                <li key={o.value}>
+                  <label className={dropdownItemCls(type === o.value)}>
+                    <input
+                      type="radio"
+                      className="hidden"
+                      name="type"
+                      value={o.value}
+                      checked={type === o.value}
+                      onChange={() => { update({ type: o.value }); setActiveDropdown(null); }}
+                    />
+                    {type === o.value ? '✓ ' : '  '}
+                    {o.label}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </DropdownFilter>
 
-            {/* Type */}
-            <DropdownFilter
-              label="Type"
-              currentLabel={typeLabel}
-              isOpen={activeDropdown === 'type'}
-              onToggle={() => toggleDropdown('type')}
-            >
-              <ul className="absolute top-full right-0 z-30 w-36 bg-[#333] border border-black/20 rounded shadow-lg py-1">
-                {TYPE_OPTIONS.map((o) => (
-                  <li key={o.value} className="p-0">
-                    <label
-                      className={`flex items-center gap-2 px-3 py-1.5 text-xs cursor-pointer transition-colors ${
-                        type === o.value ? 'text-[#366ad3] font-medium' : 'text-[#ccc] hover:text-white'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        className="hidden"
-                        name="type"
-                        value={o.value}
-                        checked={type === o.value}
-                        onChange={() => { setType(o.value); setActiveDropdown(null); }}
-                      />
-                      {type === o.value ? '✓ ' : '  '}
-                      {o.label}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </DropdownFilter>
+          {/* Order */}
+          <DropdownFilter
+            label="Sắp xếp"
+            currentLabel={orderLabel}
+            isOpen={activeDropdown === 'order'}
+            onToggle={() => toggleDropdown('order')}
+          >
+            <ul className={`${dropdownListCls} top-full right-0 w-36 py-1`}>
+              {ORDER_OPTIONS.map((o) => (
+                <li key={o.value}>
+                  <label className={dropdownItemCls(order === o.value)}>
+                    <input
+                      type="radio"
+                      className="hidden"
+                      name="order"
+                      value={o.value}
+                      checked={order === o.value}
+                      onChange={() => { update({ order: o.value }); setActiveDropdown(null); }}
+                    />
+                    {order === o.value ? '✓ ' : '  '}
+                    {o.label}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </DropdownFilter>
 
-            {/* Order By */}
-            <DropdownFilter
-              label="Order by"
-              currentLabel={orderLabel}
-              isOpen={activeDropdown === 'order'}
-              onToggle={() => toggleDropdown('order')}
-            >
-              <ul className="absolute top-full right-0 z-30 w-36 bg-[#333] border border-black/20 rounded shadow-lg py-1">
-                {ORDER_OPTIONS.map((o) => (
-                  <li key={o.value} className="p-0">
-                    <label
-                      className={`flex items-center gap-2 px-3 py-1.5 text-xs cursor-pointer transition-colors ${
-                        order === o.value ? 'text-[#366ad3] font-medium' : 'text-[#ccc] hover:text-white'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        className="hidden"
-                        name="order"
-                        value={o.value}
-                        checked={order === o.value}
-                        onChange={() => { setOrder(o.value); setActiveDropdown(null); }}
-                      />
-                      {order === o.value ? '✓ ' : '  '}
-                      {o.label}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </DropdownFilter>
-
-            {/* Submit */}
-            <div className="w-full px-[5px] py-[6px]">
-              <button
-                type="submit"
-                className="w-full bg-[#366ad3] hover:bg-[#2856b8] text-white text-xs font-medium py-1.5 rounded flex items-center justify-center gap-1.5 transition-colors"
-              >
-                <FaSearch size={11} />
-                Search
-              </button>
-            </div>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );
 }
+
+FilterPanel.propTypes = {
+  filters: PropTypes.shape({
+    status: PropTypes.string,
+    type: PropTypes.string,
+    genres: PropTypes.arrayOf(PropTypes.string),
+    order: PropTypes.string,
+  }),
+  onFiltersChange: PropTypes.func.isRequired,
+};

@@ -18,7 +18,7 @@ export default function MangaCard({ manga }) {
     <div className="group relative">
       <Link to={`/manga/${manga.slug}`} className="block">
         {/* Cover image */}
-        <div className="relative overflow-hidden rounded-lg aspect-[2/3] bg-[#222]">
+        <div className="relative overflow-hidden rounded-lg aspect-[2/3] bg-th-card">
           <img
             src={manga.cover}
             alt={manga.title}
@@ -50,11 +50,11 @@ export default function MangaCard({ manga }) {
 
         {/* Info */}
         <div className="mt-2">
-          <h3 className="text-[#ddd] font-medium text-sm leading-tight line-clamp-2 group-hover:text-[#366ad3] transition-colors">
+          <h3 className="text-th-text font-medium text-sm leading-tight line-clamp-2 group-hover:text-[#366ad3] transition-colors">
             {manga.title}
           </h3>
           <div className="flex items-center justify-between mt-1">
-            <span className="text-[#888] text-xs">{manga.latestChapter}</span>
+            <span className="text-th-muted text-xs">{manga.latestChapter}</span>
             {manga.rating && (
               <span className="flex items-center gap-0.5 text-[#f90] text-xs font-medium">
                 <FaStar size={10} /> {manga.rating}
