@@ -38,7 +38,7 @@ export default function MangaList() {
       <div className="flex flex-col lg:flex-row gap-6">
         <main className="flex-1 min-w-0">
           {/* Tabs */}
-          <div className="flex gap-1 mb-5 border-b border-th-border overflow-x-auto overflow-y-hidden">
+          <div className="flex gap-1 mb-5 border-b border-th-border overflow-hidden">
             {TABS.map((t) => (
               <button
                 key={t.slug}

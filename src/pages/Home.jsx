@@ -41,8 +41,8 @@ export default function Home() {
 
             {/* Tabbed list — dùng data từ /danh-sach */}
             <div>
-              <div className="flex items-center justify-between mb-0">
-                <div className="flex gap-1 border-b border-th-border overflow-x-auto overflow-y-hidden">
+              <div className="flex-1 mb-0">
+                <div className="flex gap-1 border-b border-th-border overflow-hidden">
                   {TYPES.map((t) => (
                     <button
                       key={t.slug}
@@ -57,12 +57,12 @@ export default function Home() {
                     </button>
                   ))}
                 </div>
-                <Link
+                {/* <Link
                   to={`/manga?type=${activeType}`}
                   className="text-xs text-[#366ad3] hover:underline shrink-0 ml-4 pb-1"
                 >
                   Xem tất cả
-                </Link>
+                </Link> */}
               </div>
 
               <div className="mt-4">

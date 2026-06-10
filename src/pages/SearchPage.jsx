@@ -53,19 +53,18 @@ export default function SearchPage() {
       <div className="flex flex-col lg:flex-row gap-6">
         <main className="flex-1 min-w-0">
           {/* Search input */}
-          <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
+          <form onSubmit={handleSubmit} className="relative mb-4">
             <input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Tìm kiếm truyện..."
-              className="flex-1 bg-th-surface border border-th-border text-th-text placeholder-th-dim px-4 py-2.5 rounded text-sm outline-none focus:border-[#366ad3] transition-colors"
+              className="w-full bg-th-surface border border-th-border text-th-text placeholder-th-dim pl-4 pr-12 py-2.5 rounded text-sm outline-none focus:border-[#366ad3] transition-colors"
             />
             <button
               type="submit"
-              className="bg-[#366ad3] hover:bg-[#2856b8] text-white px-4 py-2.5 rounded flex items-center gap-2 text-sm font-medium transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center hover:bg-[#2856b8] text-xs transition-colors"
             >
-              <FaSearch size={13} />
-              Tìm
+              <FaSearch size={12} />
             </button>
           </form>
 
