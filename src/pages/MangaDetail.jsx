@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaBookmark, FaRegBookmark, FaBook, FaUser, FaTag } from 'react-icons/fa';
+import { FaBookmark, FaRegBookmark, FaBook, FaUser, FaTag, FaPlay } from 'react-icons/fa';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { useHistory } from '../hooks/useHistory';
 import { useMangaDetail } from '../hooks/useMangaDetail';
+import { useReadingProgress } from '../hooks/useReadingProgress';
 
 export default function MangaDetail() {
   const { slug } = useParams();
   const { isBookmarked, toggle } = useBookmarks();
   const { addToHistory } = useHistory();
+  const { getProgress } = useReadingProgress();
 
   const { data: manga, isLoading, isError } = useMangaDetail(slug);
 
@@ -36,6 +38,7 @@ export default function MangaDetail() {
   const bookmarked = isBookmarked(manga.id);
   const firstChapter = manga.chapters[0];
   const latestChapter = manga.chapters[manga.chapters.length - 1];
+  const progress = getProgress(slug);
 
   const statusStyle = {
     Ongoing: 'border-green-500 text-green-400',
@@ -115,20 +118,29 @@ export default function MangaDetail() {
             )}
 
             <div className="flex gap-2 flex-wrap">
+              {progress ? (
+                <Link
+                  to={`/manga/${slug}/chapter/${progress.chapterId}`}
+                  className="flex items-center gap-2 bg-[#366ad3] hover:bg-[#2856b8] text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+                >
+                  <FaPlay size={11} /> Tiếp tục đọc
+                </Link>
+              ) : (
+                firstChapter && (
+                  <Link
+                    to={`/manga/${slug}/chapter/${firstChapter.chapterId}`}
+                    className="flex items-center gap-2 bg-[#366ad3] hover:bg-[#2856b8] text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+                  >
+                    <FaBook size={12} /> Đọc từ đầu
+                  </Link>
+                )
+              )}
               {firstChapter && (
                 <Link
                   to={`/manga/${slug}/chapter/${firstChapter.chapterId}`}
-                  className="flex items-center gap-2 bg-[#366ad3] hover:bg-[#2856b8] text-white px-4 py-2 rounded text-sm font-medium transition-colors"
-                >
-                  <FaBook size={12} /> Đọc từ đầu
-                </Link>
-              )}
-              {latestChapter && latestChapter.chapterId !== firstChapter?.chapterId && (
-                <Link
-                  to={`/manga/${slug}/chapter/${latestChapter.chapterId}`}
                   className="flex items-center gap-2 bg-th-card hover:bg-th-input text-th-text px-4 py-2 rounded text-sm font-medium border border-th-border transition-colors"
                 >
-                  <FaBook size={12} /> Đọc mới nhất
+                  <FaBook size={12} /> Đọc từ đầu
                 </Link>
               )}
               <button
@@ -155,15 +167,25 @@ export default function MangaDetail() {
         </h2>
 
         <div className="divide-y divide-th-border-s max-h-[500px] overflow-y-auto">
-          {manga.chapters.map((ch, i) => (
-            <Link
-              key={i}
-              to={`/manga/${slug}/chapter/${ch.chapterId}`}
-              className="flex items-center justify-between py-2.5 text-sm text-th-muted hover:text-[#366ad3] transition-colors group"
-            >
-              <span className="group-hover:text-[#366ad3] transition-colors">{ch.title}</span>
-            </Link>
-          ))}
+          {manga.chapters.map((ch, i) => {
+            const isReading = progress?.chapterId === ch.chapterId;
+            return (
+              <Link
+                key={i}
+                to={`/manga/${slug}/chapter/${ch.chapterId}`}
+                className={`flex items-center justify-between py-2.5 text-sm transition-colors group ${
+                  isReading ? 'text-[#366ad3]' : 'text-th-muted hover:text-[#366ad3]'
+                }`}
+              >
+                <span className="group-hover:text-[#366ad3] transition-colors">{ch.title}</span>
+                {isReading && (
+                  <span className="text-[10px] bg-[#366ad3]/15 text-[#366ad3] border border-[#366ad3]/30 px-1.5 py-0.5 rounded shrink-0 ml-2">
+                    Đang đọc
+                  </span>
+                )}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
